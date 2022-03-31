@@ -3,6 +3,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import TextForm from "./components/TextForm";
 import React, { useState } from "react";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Alert from "./components/Alert";
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
 
   return (
     <>
+      {/* <Router> */}
       <Navbar
         title="Text Utils"
         mode={mode}
@@ -44,13 +46,22 @@ function App() {
       />
       <Alert alert={alert} />
       <div className="container">
+        {/* <Routes>
+            <Route exact path="/about" element={<About />}></Route>
+            <Route
+              exact
+              path="/"
+              element={ */}
         <TextForm
           heading="Enter the text below to analyse"
           mode={mode}
           handleAlert={handleAlert}
         />
-        {/* <About /> */}
+        {/* }
+            ></Route>
+          </Routes> */}
       </div>
+      {/* </Router> */}
     </>
   );
 }
