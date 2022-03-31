@@ -3,37 +3,50 @@ import React, { useState } from "react";
 export default function TextForm(props) {
   const [text, setText] = useState("Enter text here");
   function convertToUpperCase() {
-    setText(text.toUpperCase());
+    setText(text.trim().replace(/  +/g, " ").toUpperCase());
+    props.handleAlert("Converted to Upper-case", "success");
   }
   function convertToLowerCase() {
-    setText(text.toLowerCase());
+    setText(text.trim().replace(/  +/g, " ").toLowerCase());
+    props.handleAlert("Converted to Lower-case", "success");
   }
   function handleOnChange(event) {
     setText(event.target.value);
   }
   function clearText() {
     setText("");
+    props.handleAlert("The text-box has been cleared.", "success");
   }
 
   function convertToTitleCase() {
     const titleCase = [];
-    text.split(" ").forEach((word) => {
-      titleCase.push(
-        word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
-      );
-    });
+    text
+      .trim()
+      .replace(/  +/g, " ")
+      .split(" ")
+      .forEach((word) => {
+        titleCase.push(
+          word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
+        );
+      });
     setText(titleCase.join(" "));
+    props.handleAlert("Converted to Title-case", "success");
   }
 
   function convertToSentenceCase() {
     const sentenceCase = [];
-    text.split(".").forEach((sentence) => {
-      sentenceCase.push(
-        sentence.trim().charAt(0).toUpperCase() +
-          sentence.trim().substring(1).toLowerCase()
-      );
-    });
+    text
+      .trim()
+      .replace(/  +/g, " ")
+      .split(".")
+      .forEach((sentence) => {
+        sentenceCase.push(
+          sentence.trim().charAt(0).toUpperCase() +
+            sentence.trim().substring(1).toLowerCase()
+        );
+      });
     setText(sentenceCase.join(". "));
+    props.handleAlert("Converted to Sentence-case", "success");
   }
 
   return (
@@ -46,6 +59,10 @@ export default function TextForm(props) {
             rows="8"
             onChange={handleOnChange}
             value={text}
+            style={{
+              color: props.mode === "light" ? "black" : "white",
+              backgroundColor: "transparent",
+            }}
           ></textarea>
         </div>
         <button className="btn btn-primary m-2" onClick={convertToUpperCase}>
@@ -67,14 +84,22 @@ export default function TextForm(props) {
       <div className="container">
         <h2>Your Text Summary</h2>
         <p>
-          {text.trim().split(" ").length} words. {text.length} characters.
+          {text === ""
+            ? "0"
+            : text.replace(/  +/g, " ").trim().split(" ").length}{" "}
+          words. {text.length} characters.
         </p>
         <p>
-          It will take approx {0.004 * (text.split(" ").length - 1)} minutes to
-          read.
+          It will take approx{" "}
+          {0.004 * (text.replace(/  +/g, " ").trim().split(" ").length - 1)}{" "}
+          minutes to read.
         </p>
         <h2>Preview</h2>
-        <p>{text}</p>
+        <p>
+          {text.length === 0
+            ? "Type Something inside the box above to display it here"
+            : text}
+        </p>
       </div>
     </>
   );
